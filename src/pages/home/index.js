@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import './App.css';
 import io from "socket.io-client"
 function App() {
-  const [user, setUser] = useState("");
+  const [message, setMessage] = useState([]);
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     const socket =io('ws://localhost:8080')
@@ -20,13 +20,19 @@ function App() {
   // const socket = new WebSocket('ws://localhost:8080')
     // const socket = io('ws://localhost:8080')
 
-const handleUser =(e)=>{
-  setUser(e.target.value)
-  localStorage.setItem("user", e.target.value)
-}
+
   return (
     <div className="App">
-     <input type="text" value={user} onChange={handleUser}/>
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+<button onClick={()=>socket.emit('message', 'hello')}>Send</button>
+<button onClick={()=>socket.emit('reset', 'delete')}>reset</button>
+<ul>
+{message.map(data=>{
+  return <li>{data}</li>
+})}
+</ul>
+      </header>
     </div>
   );
 }
